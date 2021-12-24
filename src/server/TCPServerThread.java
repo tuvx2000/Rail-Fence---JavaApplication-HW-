@@ -53,11 +53,15 @@ public class TCPServerThread implements Runnable{
 //                }
                 Scanner sc1 = new Scanner(chuoi);
                 sc1.useDelimiter("#");
-                int clientKey = sc1.nextInt();
+                String stringKey = sc1.next();
+
+                int clientKey = stringKey.length() - stringKey.replace(",", "").length() +1;
+                System.out.println("KEY = " +clientKey + " / " + stringKey );
                 String clientEncryptedText = sc1.next();
                 
                 
                 int sodong = clientEncryptedText.length()/clientKey;
+                
                 int socot = clientKey;
                 
                 String[] tempMetrix = new String[socot];//= clientEncryptedText.split(" ");   

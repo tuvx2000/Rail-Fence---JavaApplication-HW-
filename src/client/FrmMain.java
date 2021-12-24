@@ -8,6 +8,8 @@ package client;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -21,6 +23,8 @@ public class FrmMain extends javax.swing.JFrame {
     private Scanner in = null;
     
     private String prepareText="";
+    private int flagAdvanced = 0;
+    private String[] Cipher;
     /**
      * Creates new form FrmMain
      */
@@ -97,7 +101,12 @@ public class FrmMain extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel5.setText("Bản mã:");
 
-        btnHoanvi.setText("Hóa Vị Bản Mã");
+        btnHoanvi.setText("Hóa Vị Bản Mã Và Bộ Khóa");
+        btnHoanvi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHoanviActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel4.setText("Bộ Khóa:");
@@ -134,18 +143,17 @@ public class FrmMain extends javax.swing.JFrame {
                         .addGap(83, 83, 83)
                         .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtplaintext)
-                        .addComponent(txtrs)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(txtkey, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(54, 54, 54)
-                            .addComponent(jLabel4)
-                            .addGap(76, 76, 76)
-                            .addComponent(txtListKey, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addComponent(btnHoanvi, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(42, 42, 42))
+                    .addComponent(txtplaintext, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtrs, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(txtkey, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(54, 54, 54)
+                        .addComponent(jLabel4)
+                        .addGap(76, 76, 76)
+                        .addComponent(txtListKey, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addComponent(btnHoanvi)
+                .addGap(24, 24, 24))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -215,7 +223,94 @@ public class FrmMain extends javax.swing.JFrame {
            
             System.out.println("ON ENCRYPTING...");
             
+            String sendText = TaoBanMa();
+            String keyList = TaoKhoa();
+                     
+            System.out.println("Encrypted Text: " + sendText);
+            
+            txtCipher.setText(sendText);
+            prepareText = "";
+            prepareText += keyList  + "#" +sendText;
+            flagAdvanced = 0;
+            System.out.println("prepareText = " + prepareText);
+            
+    }//GEN-LAST:event_btnEncryptActionPerformed
 
+    private void txtkeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtkeyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtkeyActionPerformed
+
+    private void txtListKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtListKeyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtListKeyActionPerformed
+
+    private void btnHoanviActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHoanviActionPerformed
+        String[] keyList = txtListKey.getText().split(",");
+        
+
+        int min = 0;
+        int max = Integer.parseInt(txtkey.getText());
+
+        
+        for (int i = 0 ; i < keyList.length-1 ; i ++) {
+            int num = getRandomNumber(min,max);
+            
+            
+            String intTemp = keyList[num];//swap key
+            keyList[num] = keyList[i];
+            keyList[i] = intTemp;
+            
+            String cipherTemp = Cipher[num];//swap key
+            Cipher[num] = Cipher[i];
+            Cipher[i] = cipherTemp;
+            
+            txtCipher.setText(Arrays.toString(Cipher).replace("[", "").replace("]", "").replace(",", "").replace(" ", ""));
+
+           
+        }
+        
+        flagAdvanced = 1;
+    
+        txtListKey.setText(Arrays.toString(keyList).replace("[", "").replace("]", "").replace(" ", ""));
+        
+        
+    }//GEN-LAST:event_btnHoanviActionPerformed
+    
+     private void swap (String a, String b) {
+        String intTemp =a;
+        a = b;
+        b = a;
+    }
+     
+    private int getRandomNumber(int min, int max) {
+    //    System.out.println(Math.random());
+      return (int) ((Math.random() * (max - min)) + min);
+    }
+    
+    
+    private String  TaoKhoa(){
+        String keyList = "";
+         
+        if( flagAdvanced == 0){
+            for (int i = 0 ; i < Integer.parseInt(txtkey.getText()) ; i++) {
+            if(i == 0)
+                keyList += (i+1) ;
+            else
+                keyList += "," +(i+1) ;
+            }
+            txtListKey.setText(keyList);
+            System.out.println("Generated Key!");
+        }else{
+            System.out.println("Already Exist a Key!" + txtListKey.getText());
+            keyList = txtListKey.getText();
+        }
+        
+        
+        return keyList;
+    }
+    
+    private String  TaoBanMa(){
+        
             String plainText = txtplaintext.getText();
 
             int socot = Integer.parseInt(txtkey.getText());
@@ -227,15 +322,10 @@ public class FrmMain extends javax.swing.JFrame {
                     plainText += '@';
                 }
                 sodongcanthem = socot - sodu;
-            } 
-             
+            }             
              
             int sodong = (plainText.length() + sodongcanthem )/socot;
-            
-           
-            
-            
-            
+
             System.out.println("socot va sodong: " + socot + " / " + sodong + "\n" + "text: "+ plainText);
             System.out.println("sodu: " + sodu + " / so ky tu can them:" + (socot - sodu));
 
@@ -254,34 +344,27 @@ public class FrmMain extends javax.swing.JFrame {
              
             
             String sendText ="";
+            Cipher = new String[socot];
+
             System.out.println("ON ENCRYPTING 1 ...");
             for(int i = 0 ; i < socot; i ++){
+                Cipher[i]="";
+                
                 for(int j = 0 ; j < sodong ; j ++){
                     System.out.print(textMetrix[j][i]  ); //+ "  "
                     sendText+= textMetrix[j][i];
+                    
+                    Cipher[i] += textMetrix[j][i];
                 }
                 System.out.println("");
               //  sendText+= " ";
             }  //FOR REVIEW INPUT
             
-            System.out.println("Encrypted Text: " + sendText);
+            System.out.println("Cipher: " + Arrays.toString(Cipher));
             
-            txtCipher.setText(sendText);
-            prepareText = "";
-            prepareText += txtkey.getText()  + "#" +sendText;
             
-            System.out.println("prepareText = " + prepareText);
-            
-    }//GEN-LAST:event_btnEncryptActionPerformed
-
-    private void txtkeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtkeyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtkeyActionPerformed
-
-    private void txtListKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtListKeyActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtListKeyActionPerformed
-
+            return sendText;
+    }
     /**
      * @param args the command line arguments
      */
