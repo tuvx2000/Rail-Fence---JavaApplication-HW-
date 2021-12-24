@@ -32,7 +32,7 @@ public class TCPServerThread implements Runnable{
     private String name;
     
     public TCPServerThread (Socket socket, String name) throws IOException{
-        System.out.println("hii1");
+        System.out.println("hiiiiii");
         this.socket = socket;
         this.name = name;
         this.in = new Scanner(this.socket.getInputStream());
@@ -43,6 +43,8 @@ public class TCPServerThread implements Runnable{
     public void run(){
         try {
             while(true){
+                System.out.println("ON RUNGINGGGG.....");
+
                 String chuoi = in.nextLine().trim();
 //                if (chuoi== null){
 //                    System.out.println("NULL CMNR");
@@ -51,36 +53,52 @@ public class TCPServerThread implements Runnable{
 //                }
                 Scanner sc1 = new Scanner(chuoi);
                 sc1.useDelimiter("#");
-                String clientKey = sc1.next();
+                int clientKey = sc1.nextInt();
                 String clientEncryptedText = sc1.next();
+                
+                
+                int sodong = clientEncryptedText.length()/clientKey;
+                int socot = clientKey;
+                
+                String[] tempMetrix = new String[socot];//= clientEncryptedText.split(" ");   
+                String rs= "";
+                
+               System.out.println("socot va sodong: " + socot + " / " + sodong );
+               
+               
+               
+                for(int i = socot  -1 ; i >= 0 ; i--){
+                    System.out.println("can reach here " + i);
+                        tempMetrix[i] = clientEncryptedText.substring((sodong*(i)),(sodong*(i+1)));
 
-               // if( ClientKey.equals("truyenchuoi")){
-                      clientEncryptedText = clientEncryptedText.toUpperCase();
-        //              System.out.println("chuoi" + ClientEncryptedText);
-                      out.println("Key = "+ clientKey+ " Text = " +clientEncryptedText);
-//                }
-//                
-//                else{
-//                    Scanner scanner2 = new Scanner(ClientEncryptedText);
-//                     scanner2.useDelimiter("@");
-//                     int so1 = scanner2.nextInt();
-//                     String pheptoan = scanner2.next();
-//                     int so2 = scanner2.nextInt();
-//                     
-//                     
-//                     
-//                     if(pheptoan.equals("+"))
-//                         out.println(so1 + so2);
-//                     else if(pheptoan.equals("-"))
-//                         out.println(so1 - so2);
-//                     else if(pheptoan.equals("*"))
-//                         out.println(so1 * so2);
-//                     else if(pheptoan.equals("/"))
-//                         out.println((float) so1/so2 + "");
-//                   
-//                 
-//                }
-//                
+
+
+                    System.out.println("dong " + i + " = "+ tempMetrix[i]);
+                    String temp1 = tempMetrix[i]; 
+                    String temp2 = rs;
+                    rs = temp1 + " " + temp2;
+                }/// Trans to Metrix[]
+                
+            
+            rs = "";
+            for(int i = 0 ; i <  sodong; i ++){
+                for(int j = 0 ; j <  socot; j ++){
+                    System.out.print( tempMetrix[j].charAt(i) +"  " ); //+ "  "
+                    rs += tempMetrix[j].charAt(i);
+                }
+                System.out.println("");
+            } //FOR CONVERT INPUT
+            rs = rs.replace("@", "");
+            
+                
+                
+                
+                
+                clientEncryptedText = clientEncryptedText.toUpperCase();
+
+                out.println("Key = "+ clientKey+ " Text = " +clientEncryptedText  + " / rs = "+ rs ); //+" rslength = " + rs.length()
+
+                      
                         
                         
                         
@@ -96,6 +114,7 @@ public class TCPServerThread implements Runnable{
             try {
                 socket.close();
             } catch (Exception e) {
+                System.out.println("CANT NOT CLOSE SOCKET");
             }
         }
     }

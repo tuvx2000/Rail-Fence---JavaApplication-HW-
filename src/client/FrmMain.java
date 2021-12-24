@@ -50,8 +50,12 @@ public class FrmMain extends javax.swing.JFrame {
         btnSend = new javax.swing.JButton();
         txtrs = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        txtStatus = new javax.swing.JLabel();
+        txtCipher = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
+        btnHoanvi = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        txtListKey = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -61,9 +65,14 @@ public class FrmMain extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel2.setText("Kết Quả:");
 
-        txtkey.setText("2");
+        txtkey.setText("6");
+        txtkey.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtkeyActionPerformed(evt);
+            }
+        });
 
-        txtplaintext.setText("123456");
+        txtplaintext.setText("CHAOCACBANHOCMONBAOMATHONGTIN");
 
         btnEncrypt.setText("Mã Hóa Văn Bản");
         btnEncrypt.addActionListener(new java.awt.event.ActionListener() {
@@ -82,68 +91,100 @@ public class FrmMain extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jLabel3.setText("Khóa:");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel4.setText("Trạng thái:");
+        txtStatus.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        txtStatus.setText("  ");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jLabel5.setText("Khóa:");
+        jLabel5.setText("Bản mã:");
+
+        btnHoanvi.setText("Hóa Vị Bản Mã");
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel4.setText("Bộ Khóa:");
+
+        txtListKey.setText("1,2,3,4,5,6");
+        txtListKey.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtListKeyActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(15, 15, 15)
-                        .addComponent(jLabel5))
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)))
+                    .addComponent(jLabel5))
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addComponent(txtCipher))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(22, 22, 22)
                         .addComponent(btnEncrypt, javax.swing.GroupLayout.PREFERRED_SIZE, 184, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(83, 83, 83)
                         .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(42, 42, 42))
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(txtplaintext)
-                        .addComponent(txtkey)
-                        .addComponent(txtrs, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(199, Short.MAX_VALUE))
+                        .addComponent(txtrs)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(txtkey, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(54, 54, 54)
+                            .addComponent(jLabel4)
+                            .addGap(76, 76, 76)
+                            .addComponent(txtListKey, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
+                .addComponent(btnHoanvi, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(txtplaintext, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(43, 43, 43)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtkey, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(txtrs, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtplaintext, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnHoanvi, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtkey, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel4)
+                            .addComponent(txtListKey, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(138, 138, 138)
+                        .addComponent(jLabel1)
+                        .addGap(198, 198, 198)
+                        .addComponent(jLabel3)))
+                .addGap(34, 34, 34)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtCipher, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(btnEncrypt, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(198, 198, 198)
-                .addComponent(jLabel3)
-                .addGap(64, 64, 64)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 138, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(39, 39, 39))
+                            .addComponent(btnSend, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(txtStatus))
+                .addGap(78, 78, 78)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(txtrs, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(39, 39, 39))))
         );
 
         pack();
@@ -200,30 +241,46 @@ public class FrmMain extends javax.swing.JFrame {
 
             int count = 0;
             char[][] textMetrix = new char[sodong][socot];
-
+            
+            System.out.println("PLAIN:");
              for(int i = 0 ; i < sodong ; i ++){
                 for(int j = 0 ; j < socot ; j ++){
                     textMetrix[i][j] = plainText.charAt(count);
                     count++;
-                }
-            } //FOR CONVERT INPUT
-             
-             
-            String sendText ="";
-            System.out.println("ON ENCRYPTING 1 ...");
-            for(int i = 0 ; i < sodong ; i ++){
-                for(int j = 0 ; j < socot ; j ++){
-                    System.out.print(textMetrix[i][j] + "  " );
-                    sendText+= textMetrix[i][j];
+                    System.out.print( textMetrix[i][j] +"  " ); //+ "  "
                 }
                 System.out.println("");
-                sendText+= " ";
+            } //FOR CONVERT INPUT
+             
+            
+            String sendText ="";
+            System.out.println("ON ENCRYPTING 1 ...");
+            for(int i = 0 ; i < socot; i ++){
+                for(int j = 0 ; j < sodong ; j ++){
+                    System.out.print(textMetrix[j][i]  ); //+ "  "
+                    sendText+= textMetrix[j][i];
+                }
+                System.out.println("");
+              //  sendText+= " ";
             }  //FOR REVIEW INPUT
             
             System.out.println("Encrypted Text: " + sendText);
+            
+            txtCipher.setText(sendText);
+            prepareText = "";
             prepareText += txtkey.getText()  + "#" +sendText;
             
+            System.out.println("prepareText = " + prepareText);
+            
     }//GEN-LAST:event_btnEncryptActionPerformed
+
+    private void txtkeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtkeyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtkeyActionPerformed
+
+    private void txtListKeyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtListKeyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtListKeyActionPerformed
 
     /**
      * @param args the command line arguments
@@ -262,12 +319,16 @@ public class FrmMain extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnEncrypt;
+    private javax.swing.JButton btnHoanvi;
     private javax.swing.JButton btnSend;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txtCipher;
+    private javax.swing.JTextField txtListKey;
+    private javax.swing.JLabel txtStatus;
     private javax.swing.JTextField txtkey;
     private javax.swing.JTextField txtplaintext;
     private javax.swing.JTextField txtrs;
