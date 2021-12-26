@@ -8,6 +8,10 @@ package server;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -40,69 +44,138 @@ public class TCPServerThread implements Runnable{
         new Thread(this).start();
     }
     
+    
+    private void getMetrix(String[] metrix, int socot, int sodong,String clientEncryptedText){
+        for(int i = socot  -1 ; i >= 0 ; i--){
+ //                  System.out.println("can reach here " + i);
+                        metrix[i] = clientEncryptedText.substring((sodong*(i)),(sodong*(i+1)));
+
+//                    System.out.println("dong " + i + " = "+ metrix[i]);
+//                    String temp1 = metrix[i]; 
+//                    String temp2 = rs;
+//                    rs = temp1 + " " + temp2;
+                }/// Trans to Metrix[]
+    }
+    
+    
+    private int checkOriginal(  String[] keyList ){
+         for(int i = 1 ; i < keyList.length ; i ++){
+                    if( Integer.parseInt(keyList[i]) <= Integer.parseInt(keyList[i-1])){
+                        return 1;  
+                    }
+                }/// kiem tra co phai nguyen ban khong
+         return 0;
+    }
+    
+    private String[] convertAdvanced(String[] metrix, int socot, String[] keyList ){
+        String[] tempMetrix = new String[socot]; 
+
+        for(int i = 0 ; i < metrix.length ; i++){
+                        System.out.println("i = " + i +"/ temp = " + (Integer.parseInt(keyList[i])-1));
+                        
+                        tempMetrix[Integer.parseInt(keyList[i])-1] = metrix[i];
+        }
+        return tempMetrix;
+
+        
+    }
     public void run(){
         try {
             while(true){
                 System.out.println("ON RUNGINGGGG.....");
 
-                String chuoi = in.nextLine().trim();
-//                if (chuoi== null){
-//                    System.out.println("NULL CMNR");
-//                }else{
-//                    System.out.println("NOT NULL <3");
-//                }
-                Scanner sc1 = new Scanner(chuoi);
+                String rawInput = in.nextLine().trim();
+                Scanner sc1 = new Scanner(rawInput);
                 sc1.useDelimiter("#");
+                
                 String stringKey = sc1.next();
-
                 int clientKey = stringKey.length() - stringKey.replace(",", "").length() +1;
                 System.out.println("KEY = " +clientKey + " / " + stringKey );
                 String clientEncryptedText = sc1.next();
                 
-                
                 int sodong = clientEncryptedText.length()/clientKey;
-                
                 int socot = clientKey;
                 
-                String[] tempMetrix = new String[socot];//= clientEncryptedText.split(" ");   
+                String[] metrix = new String[socot];
+
                 String rs= "";
                 
+
+                List listCharacter = new ArrayList();
+                 List<Integer> listAmountCharacter = new ArrayList();
+                ///////////////////////////////// Finish decleared
                System.out.println("socot va sodong: " + socot + " / " + sodong );
                
+               getMetrix( metrix,  socot, sodong,clientEncryptedText);
                
-               
-                for(int i = socot  -1 ; i >= 0 ; i--){
-                    System.out.println("can reach here " + i);
-                        tempMetrix[i] = clientEncryptedText.substring((sodong*(i)),(sodong*(i+1)));
 
-
-
-                    System.out.println("dong " + i + " = "+ tempMetrix[i]);
-                    String temp1 = tempMetrix[i]; 
-                    String temp2 = rs;
-                    rs = temp1 + " " + temp2;
-                }/// Trans to Metrix[]
+                String[] keyList = stringKey.split(",");/// get keylist
+                System.out.println("KEYLIST = " +Arrays.toString(keyList) );
                 
-            
-            rs = "";
-            for(int i = 0 ; i <  sodong; i ++){
-                for(int j = 0 ; j <  socot; j ++){
-                    System.out.print( tempMetrix[j].charAt(i) +"  " ); //+ "  "
-                    rs += tempMetrix[j].charAt(i);
+                int flag= checkOriginal(keyList);
+               
+                System.out.println("rsLIST RS = " + Arrays.toString(metrix));
+
+                if(flag == 1){
+                    metrix = convertAdvanced( metrix,  socot,  keyList );
+                }    
+                
+                
+                System.out.println("rsLIST RS = " + Arrays.toString(metrix));
+                
+                
+
+                
+                rs = "";
+                int maxAmount = 0;
+                Integer semiMax = 0;
+                for(int i = 0 ; i <  sodong; i ++){
+                    for(int j = 0 ; j <  socot; j ++){
+                        System.out.print(metrix[j].charAt(i) +"  " ); //+ "  "
+                        char tempx =metrix[j].charAt(i);
+
+                        rs += tempx;
+                            
+                            if( !listCharacter.contains(tempx) && tempx != '@'){
+                                listCharacter.add(tempx);
+ 
+                                Integer amount = clientEncryptedText.length() - clientEncryptedText.replace(Character.toString(tempx), "").length();
+                                listAmountCharacter.add(amount);
+                                
+                                if(listCharacter.size() == 1){
+                                    maxAmount  = amount;
+                                            
+                                }else if(maxAmount < amount) {
+                                    semiMax = maxAmount;
+                                    maxAmount = amount;
+                                }else if(semiMax < amount){// if(listCharacter.size() == 2){
+                                    semiMax = amount;
+                                }
+                                
+                                System.out.println("temp [" + listCharacter.size() + "] = " + tempx + " amount = " +  amount );
+                            }
+                         
+                    }
+                    rs+=" ";
+                    System.out.println("");
+                } //FOR CONVERT INPUT
+                rs = rs.replace("@", "").replace(" ","");
+         
+                String rsSemiMax =" /Amount Appeared: " + semiMax + " /Second most occurring characters : " ;
+                System.out.println("semiMax Amount = " + semiMax );
+                
+                for (int i = 0; i < listAmountCharacter.size(); i++) {
+                    if(listAmountCharacter.get(i) == semiMax) rsSemiMax += listCharacter.get(i) +" ";
                 }
-                System.out.println("");
-            } //FOR CONVERT INPUT
-            rs = rs.replace("@", "");
-            
                 
-                
-                
+                System.out.println("seMax = " + rsSemiMax);
                 
                 clientEncryptedText = clientEncryptedText.toUpperCase();
 
-                out.println("Key = "+ clientKey+ " Text = " +clientEncryptedText  + " / rs = "+ rs ); //+" rslength = " + rs.length()
+    //            out.println("Key = "+ clientKey+ " Text = " +clientEncryptedText  + " / rs = "+ rs ); //+" rslength = " + rs.length()
 
-                      
+               out.println("Text = "+ rs +  rsSemiMax   ); //+" rslength = " + rs.length()
+      
                         
                         
                         
